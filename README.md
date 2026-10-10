@@ -5,6 +5,29 @@
 [rmate-python](https://github.com/sclukey/rmate-python), использует только
 стандартную библиотеку Go и собирается в один исполняемый файл.
 
+## Установка готового бинарника
+
+На Linux или macOS выполните в терминале:
+
+```sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/wx-ast/go_rmate/master/install.sh)"
+```
+
+Скрипт определяет ОС и архитектуру (`amd64` или `arm64`), скачивает последний
+стабильный релиз, проверяет SHA256 и устанавливает `rmate` в `/usr/local/bin`.
+Если каталог недоступен для записи, используется `sudo`. Компилятор Go не нужен.
+Повторный запуск обновляет приложение.
+
+Для установки без `sudo` в собственный каталог:
+
+```sh
+RMATE_INSTALL_DIR="$HOME/.local/bin" /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/wx-ast/go_rmate/master/install.sh)"
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+Можно указать конкретную версию через `RMATE_VERSION=v1.0.2`.
+После установки проверьте её командой `rmate --version`.
+
 ## Сборка
 
 Требуется Go 1.22 или новее. Основные платформы — Linux и macOS.

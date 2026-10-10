@@ -42,6 +42,8 @@ jobs:
         run: go test -race ./...
       - name: Vet
         run: go vet ./...
+      - name: Test installer
+        run: bash scripts/test-install.sh
       - name: Run release-style binary
         run: |
           CGO_ENABLED=0 go build -trimpath -ldflags '-s -w' -o "$RUNNER_TEMP/rmate-smoke" .
