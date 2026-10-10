@@ -33,12 +33,19 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-go@v6
         with:
-          go-version-file: go.mod
+          # go.mod declares the minimum version, not the release toolchain.
+          # Older Go linkers omit LC_UUID required by current macOS runners.
+          go-version: stable
+          check-latest: true
           cache: false
       - name: Test
         run: go test -race ./...
       - name: Vet
         run: go vet ./...
+      - name: Run release-style binary
+        run: |
+          CGO_ENABLED=0 go build -trimpath -ldflags '-s -w' -o "$RUNNER_TEMP/rmate-smoke" .
+          "$RUNNER_TEMP/rmate-smoke" --version
 
   release:
     name: Build and publish
@@ -54,7 +61,8 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-go@v6
         with:
-          go-version-file: go.mod
+          go-version: stable
+          check-latest: true
           cache: false
       - name: Build archives and checksums
         run: bash scripts/build-release.sh "$RELEASE_TAG"
